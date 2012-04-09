@@ -1,0 +1,13 @@
+<% if (!user) { %>
+  <div class="hero-unit">
+    <h1>歡迎來到 Microblog</h1>
+    <p>Microblog 是一個基於 Node.js 的微博系統。</p>
+    <p>
+      <a class="btn btn-primary btn-large" href="/login">登錄</a>
+      <a class="btn btn-large" href="/reg">立即註冊</a>
+    </p>
+  </div>
+<% } else { %>
+  <%- partial('say') %> 
+<% } %>
+<%- partial('posts') %> 

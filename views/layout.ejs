@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title><%= title %> - Microblog</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+  
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Microblog</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">首頁</a></li>
+              <% if (!user) { %>
+                <li><a href="/login">登入</a></li>
+                <li><a href="/reg">註冊</a></li>
+              <% } else { %>
+                <li><a href="/logout">登出</a></li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="container" class="container">
+      <% if (success) { %>
+        <div class="alert alert-success">
+          <%= success %>
+        </div>
+      <% } %>
+      <% if (error) { %>
+        <div class="alert alert-error">
+          <%= error %>
+        </div>
+      <% } %>
+      <%- body %>
+      <hr />
+      <footer>
+        <p><a href="http://www.byvoid.com/" target="_blank">BYVoid</a> 2012</p>
+      </footer>
+    </div>
+  </body>
+  <script src="/javascripts/jquery.js"></script>
+  <script src="/javascripts/bootstrap.js"></script>
+</html>
