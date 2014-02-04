@@ -5,7 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var settings = require('./settings');
-var MongoStore = require('connect-mongo');
+var MongoStore = require('connect-mongo')(express);
 
 var app = module.exports = express.createServer();
 
