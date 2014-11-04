@@ -1,29 +1,31 @@
+var express = require('express');
 var crypto = require('crypto');
+var router = express.Router();
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 
-module.exports = function(app) {
-  app.get('/', function(req, res) {
+/* GET home page. */
+router.get('/', function(req, res) {
     Post.get(null, function(err, posts) {
       if (err) {
         posts = [];
       }
       res.render('index', {
         title: '首頁',
-        posts: posts,
+        posts: posts
       });
     });
   });
   
-  app.get('/reg', checkNotLogin);
-  app.get('/reg', function(req, res) {
+router.get('/reg', checkNotLogin);
+router.get('/reg', function(req, res) {
     res.render('reg', {
-      title: '用戶註冊',
+      title: '用戶註冊'
     });
-  });
+});
   
-  app.post('/reg', checkNotLogin);
-  app.post('/reg', function(req, res) {
+  router.post('/reg', checkNotLogin);
+  router.post('/reg', function(req, res) {
     //檢驗用戶兩次輸入的口令是否一致
     if (req.body['password-repeat'] != req.body['password']) {
       req.flash('error', '兩次輸入的口令不一致');
@@ -36,7 +38,7 @@ module.exports = function(app) {
     
     var newUser = new User({
       name: req.body.username,
-      password: password,
+      password: password
     });
     
     //檢查用戶名是否已經存在
@@ -60,15 +62,15 @@ module.exports = function(app) {
     });
   });
   
-  app.get('/login', checkNotLogin);
-  app.get('/login', function(req, res) {
+  router.get('/login', checkNotLogin);
+  router.get('/login', function(req, res) {
     res.render('login', {
-      title: '用戶登入',
+      title: '用戶登入'
     });
   });
   
-  app.post('/login', checkNotLogin);
-  app.post('/login', function(req, res) {
+  router.post('/login', checkNotLogin);
+  router.post('/login', function(req, res) {
     //生成口令的散列值
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('base64');
@@ -88,14 +90,14 @@ module.exports = function(app) {
     });
   });
   
-  app.get('/logout', checkLogin);
-  app.get('/logout', function(req, res) {
+  router.get('/logout', checkLogin);
+  router.get('/logout', function(req, res) {
     req.session.user = null;
     req.flash('success', '登出成功');
     res.redirect('/');
   });
   
-  app.get('/u/:user', function(req, res) {
+  router.get('/u/:user', function(req, res) {
     User.get(req.params.user, function(err, user) {
       if (!user) {
         req.flash('error', '用戶不存在');
@@ -108,14 +110,14 @@ module.exports = function(app) {
         }
         res.render('user', {
           title: user.name,
-          posts: posts,
+          posts: posts
         });
       });
     });
   });
   
-  app.post('/post', checkLogin);
-  app.post('/post', function(req, res) {
+  router.post('/post', checkLogin);
+  router.post('/post', function(req, res) {
     var currentUser = req.session.user;
     var post = new Post(currentUser.name, req.body.post);
     post.save(function(err) {
@@ -127,7 +129,7 @@ module.exports = function(app) {
       res.redirect('/u/' + currentUser.name);
     });
   });
-};
+
 
 function checkLogin(req, res, next) {
   if (!req.session.user) {
@@ -144,3 +146,5 @@ function checkNotLogin(req, res, next) {
   }
   next();
 }
+
+module.exports = router;

@@ -8,7 +8,7 @@ function Post(username, post, time) {
   } else {
     this.time = new Date();
   }
-};
+}
 module.exports = Post;
 
 Post.prototype.save = function save(callback) {
@@ -16,7 +16,7 @@ Post.prototype.save = function save(callback) {
   var post = {
     user: this.user,
     post: this.post,
-    time: this.time,
+    time: this.time
   };
   mongodb.open(function(err, db) {
     if (err) {
